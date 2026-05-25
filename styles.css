@@ -1,0 +1,2012 @@
+/*
+============================================
+全局样式重置和基础设置
+============================================
+- 使用通配符选择器重置所有元素的默认边距和内边距
+- 设置box-sizing为border-box，使宽高计算更直观
+- 定义CSS变量，便于统一管理颜色、字体等样式
+*/
+
+/* CSS变量定义 - 统一管理颜色主题 */
+:root {
+    /* 主色调 - 深红色系，体现餐饮热情 */
+    --primary-color: #c41e3a;
+    --primary-dark: #9a1730;
+    --primary-light: #e85a6f;
+    
+    /* 辅助色 - 金色系，体现品质感 */
+    --secondary-color: #d4a574;
+    --secondary-dark: #b8956a;
+    
+    /* 中性色 - 用于文字和背景 */
+    --text-dark: #2c2c2c;
+    --text-light: #666666;
+    --text-muted: #999999;
+    --bg-light: #f8f8f8;
+    --bg-white: #ffffff;
+    
+    /* 边框和阴影 */
+    --border-color: #e0e0e0;
+    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.2);
+    
+    /* 过渡动画时间 */
+    --transition-fast: 0.2s;
+    --transition-normal: 0.3s;
+    --transition-slow: 0.5s;
+    
+    /* 字体设置 */
+    --font-primary: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+    --font-size-base: 16px;
+}
+
+/* 全局重置样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 
+    页面基础样式
+    - 设置默认字体和行高
+    - 设置背景色和文字颜色
+    - 平滑滚动效果
+*/
+html {
+    font-size: var(--font-size-base);
+    scroll-behavior: smooth; /* 平滑滚动 */
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    overflow-x: hidden; /* 防止横向滚动条 */
+}
+
+/* 
+    链接基础样式
+    - 去除默认下划线
+    - 设置默认颜色
+*/
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--transition-fast);
+}
+
+/* 
+    图片基础样式
+    - 设置最大宽度为100%，确保响应式
+    - 设置为块级元素，去除底部间隙
+*/
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 
+    按钮基础样式重置
+    - 去除默认边框和背景
+    - 设置鼠标指针
+*/
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* 
+    列表样式重置
+    - 去除默认列表符号
+*/
+ul, ol {
+    list-style: none;
+}
+
+/*
+============================================
+页面顶部导航栏样式
+============================================
+- 固定定位，始终显示在页面顶部
+- 包含Logo和导航菜单
+- 响应式设计，移动端显示汉堡菜单
+*/
+
+.header {
+    /* 固定定位设置 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    
+    /* 布局设置 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    
+    /* 视觉样式 */
+    background-color: var(--bg-white);
+    box-shadow: var(--shadow-light);
+    height: 70px;
+}
+
+/* 
+    Logo区域样式
+    - 包含图标和文字
+    - 使用flex布局对齐
+*/
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Logo图标样式 */
+.logo-icon {
+    font-size: 2rem;
+    animation: pulse 2s infinite; /* 脉冲动画效果 */
+}
+
+/* Logo文字样式 */
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+}
+
+/* 
+    导航菜单样式
+    - 水平排列的菜单项
+    - 桌面端显示，移动端隐藏
+*/
+.nav {
+    display: flex;
+}
+
+.nav-list {
+    display: flex;
+    gap: 30px;
+}
+
+/* 导航菜单项样式 */
+.nav-item {
+    position: relative;
+}
+
+/* 导航链接样式 */
+.nav-link {
+    display: block;
+    padding: 8px 0;
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: color var(--transition-fast);
+    position: relative;
+}
+
+/* 
+    导航链接悬停效果
+    - 颜色变化
+    - 底部下划线动画
+*/
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* 导航链接底部下划线 - 初始状态 */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width var(--transition-normal);
+}
+
+/* 导航链接悬停时下划线展开 */
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* 激活状态的导航链接 */
+.nav-link.active {
+    color: var(--primary-color);
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* 
+    移动端菜单切换按钮
+    - 桌面端隐藏
+    - 移动端显示汉堡菜单图标
+*/
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 汉堡菜单图标的三条线 */
+.hamburger {
+    width: 20px;
+    height: 2px;
+    background-color: var(--primary-color);
+    position: relative;
+    transition: background-color var(--transition-fast);
+}
+
+/* 使用伪元素创建汉堡菜单的上下两条线 */
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: transform var(--transition-normal);
+}
+
+.hamburger::before {
+    top: -6px;
+}
+
+.hamburger::after {
+    top: 6px;
+}
+
+/*
+============================================
+Hero横幅区域样式
+============================================
+- 页面顶部的大图展示区域
+- 包含欢迎标题和行动按钮
+- 使用渐变背景模拟图片效果
+*/
+
+.hero {
+    /* 占位高度，为背景图片预留空间 */
+    min-height: 500px;
+    height: 60vh;
+    
+    /* 背景设置 - 使用渐变模拟背景图 */
+    background: linear-gradient(
+        135deg,
+        var(--primary-color) 0%,
+        var(--primary-dark) 100%
+    );
+    
+    /* 居中布局内容 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    /* 内边距，考虑固定导航栏高度 */
+    padding-top: 70px;
+    
+    /* 相对定位，用于叠加效果 */
+    position: relative;
+}
+
+/* Hero区域叠加层 - 增加纹理效果 */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>') repeat;
+    opacity: 0.3;
+}
+
+/* Hero内容容器 */
+.hero-content {
+    /* 相对定位，显示在叠加层之上 */
+    position: relative;
+    z-index: 1;
+    
+    /* 最大宽度限制 */
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+/* Hero主标题 */
+.hero-title {
+    font-size: 3rem;
+    color: var(--bg-white);
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: fadeInDown 1s ease-out;
+}
+
+/* Hero副标题 */
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 40px;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+/* Hero行动按钮 */
+.hero-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: var(--bg-white);
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 50px;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-medium);
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+/* Hero按钮悬停效果 */
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-heavy);
+    background-color: var(--secondary-color);
+    color: var(--bg-white);
+}
+
+/*
+============================================
+主要内容区域样式
+============================================
+- 包含所有餐厅的菜品展示
+- 使用网格布局
+*/
+
+.main-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 5%;
+}
+
+/*
+============================================
+餐厅区域样式
+============================================
+- 每个餐厅的独立展示区域
+- 包含餐厅标题和菜品网格
+*/
+
+.restaurant-section {
+    margin-bottom: 80px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* 餐厅头部区域 */
+.restaurant-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* 餐厅标题 */
+.restaurant-title {
+    font-size: 2.2rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* 餐厅图标 */
+.restaurant-icon {
+    font-size: 2.5rem;
+}
+
+/* 餐厅描述 */
+.restaurant-desc {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/*
+============================================
+菜品网格布局
+============================================
+- 使用CSS Grid实现响应式网格
+- 桌面端4列，平板2列，移动端1列
+*/
+
+.dishes-grid {
+    display: grid;
+    /* 
+        auto-fill: 自动填充列
+        minmax: 最小240px，最大1fr（平分剩余空间）
+    */
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+/*
+============================================
+菜品卡片样式
+============================================
+- 单个菜品的展示卡片
+- 包含图片、名称、描述、价格
+- 悬停时有提升效果
+*/
+
+.dish-card {
+    background-color: var(--bg-white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+}
+
+/* 菜品卡片悬停效果 */
+.dish-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-heavy);
+}
+
+/* 
+    菜品图片容器
+    - 相对定位，用于放置标签
+    - 设置固定高度比例
+*/
+.dish-image-container {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+}
+
+/* 菜品图片样式 */
+.dish-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 保持比例裁剪 */
+    transition: transform var(--transition-slow);
+}
+
+/* 图片悬停放大效果 */
+.dish-card:hover .dish-image {
+    transform: scale(1.1);
+}
+
+/* 
+    菜品标签样式
+    - 如"招牌推荐"、"人气爆款"
+    - 绝对定位在图片右上角
+*/
+.dish-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(196, 30, 58, 0.4);
+}
+
+/* 
+    菜品信息区域
+    - 包含名称、描述、价格
+*/
+.dish-info {
+    padding: 15px;
+}
+
+/* 菜品名称 */
+.dish-name {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* 菜品描述 */
+.dish-desc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    line-height: 1.5;
+    /* 限制两行，超出显示省略号 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 
+    菜品底部区域
+    - 包含价格和按钮
+    - 使用flex布局
+*/
+.dish-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 菜品价格 */
+.dish-price {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* 菜品按钮 */
+.dish-btn {
+    padding: 6px 16px;
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+/* 菜品按钮悬停效果 */
+.dish-btn:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+/*
+============================================
+页脚样式
+============================================
+- 包含关于我们、联系方式、社交媒体
+- 深色背景，浅色文字
+*/
+
+.footer {
+    background-color: #2c2c2c;
+    color: var(--bg-white);
+    padding: 60px 5% 30px;
+}
+
+/* 页脚内容区域 */
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+/* 页脚各部分 */
+.footer-section {
+    /* 自动适应内容 */
+}
+
+/* 页脚标题 */
+.footer-title {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+/* 页脚文字 */
+.footer-text {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* 页脚列表 */
+.footer-list {
+    font-size: 0.95rem;
+    line-height: 2.2;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-list li {
+    margin-bottom: 5px;
+}
+
+/* 社交媒体链接容器 */
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+/* 社交媒体链接 */
+.social-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    font-size: 1.3rem;
+    transition: all var(--transition-fast);
+}
+
+/* 社交媒体链接悬停效果 */
+.social-link:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-5px);
+}
+
+/* 页脚底部版权区域 */
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+/*
+============================================
+模态框（弹窗）样式
+============================================
+- 点击"查看详情"时显示
+- 全屏遮罩层，内容居中
+*/
+
+/* 模态框容器 - 默认隐藏 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* 模态框内容区域 */
+.modal-content {
+    background-color: var(--bg-white);
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+/* 模态框关闭按钮 */
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+    z-index: 1;
+}
+
+.modal-close:hover {
+    color: var(--primary-color);
+}
+
+/* 模态框主体内容 */
+.modal-body {
+    padding: 30px;
+    text-align: center;
+}
+
+/* 模态框图片 */
+.modal-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* 模态框标题 */
+.modal-title {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+/* 模态框描述 */
+.modal-desc {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* 模态框价格 */
+.modal-price {
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/*
+============================================
+动画关键帧定义
+============================================
+- 定义各种动画效果
+*/
+
+/* 淡入动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 从上淡入 */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 从下淡入 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 滑入动画 */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 脉冲动画 - 用于Logo图标 */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/*
+============================================
+响应式设计
+============================================
+- 针对不同屏幕尺寸调整布局
+- 使用媒体查询实现
+*/
+
+/* 
+    平板设备 (768px - 1024px)
+    - 导航菜单间距调整
+    - Hero标题字号调整
+*/
+@media screen and (max-width: 1024px) {
+    .nav-list {
+        gap: 20px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .restaurant-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* 
+    移动设备 (小于768px)
+    - 显示汉堡菜单
+    - 导航菜单变为垂直布局
+    - 调整各元素大小和间距
+*/
+@media screen and (max-width: 768px) {
+    /* 显示汉堡菜单按钮 */
+    .menu-toggle {
+        display: flex;
+    }
+    
+    /* 导航菜单隐藏，变为垂直布局 */
+    .nav {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-white);
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: var(--shadow-medium);
+        display: none;
+    }
+    
+    /* 导航菜单激活状态 */
+    .nav.active {
+        display: flex;
+    }
+    
+    .nav-list {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-link {
+        padding: 10px 0;
+        font-size: 1.1rem;
+    }
+    
+    /* Hero区域调整 */
+    .hero {
+        min-height: 400px;
+        height: 50vh;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .hero-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+    
+    /* 餐厅标题调整 */
+    .restaurant-title {
+        font-size: 1.6rem;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .restaurant-icon {
+        font-size: 2rem;
+    }
+    
+    /* 菜品网格调整 */
+    .dishes-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    /* 页脚调整 */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+}
+
+/* 
+    小屏移动设备 (小于480px)
+    - 进一步缩小字号和间距
+*/
+@media screen and (max-width: 480px) {
+    .header {
+        height: 60px;
+    }
+    
+    .logo-text {
+        font-size: 1.2rem;
+    }
+    
+    .hero-title {
+        font-size: 1.6rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .main-content {
+        padding: 40px 4%;
+    }
+    
+    .dish-name {
+        font-size: 1rem;
+    }
+    
+    .dish-price {
+        font-size: 1.2rem;
+    }
+}
+
+/*
+============================================
+工具类样式
+============================================
+- 常用的辅助样式类
+*/
+
+/* 文本居中 */
+.text-center {
+    text-align: center;
+}
+
+/* 隐藏元素 */
+.hidden {
+    display: none !important;
+}
+
+/* 清除浮动 */
+.clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+/*
+============================================
+幸运转盘样式
+============================================
+- 转盘抽取功能相关样式
+- 包含转盘、指针、结果展示等
+*/
+
+/* 
+    转盘区域整体容器
+    - 居中布局
+    - 设置背景和内边距
+*/
+.lucky-wheel-section {
+    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+    padding: 60px 5%;
+    text-align: center;
+}
+
+/* 转盘内容容器 */
+.wheel-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* 
+    转盘区域头部
+    - 包含标题和副标题
+*/
+.wheel-header {
+    margin-bottom: 40px;
+}
+
+/* 转盘标题 */
+.wheel-title {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* 转盘图标 */
+.wheel-icon {
+    font-size: 3rem;
+    animation: spin 3s linear infinite;
+}
+
+/* 转盘副标题 */
+.wheel-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+}
+
+/* 
+    转盘包装器
+    - 包含转盘和指针
+    - 相对定位，用于指针绝对定位
+*/
+.wheel-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 30px auto;
+}
+
+/* 
+    转盘和结果卡片的容器
+    - 使用flex布局并排显示
+*/
+.wheel-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 
+    转盘和结果的横向布局容器
+*/
+.wheel-and-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+/* 
+    转盘主体
+    - 圆形容器
+    - 使用CSS绘制扇区
+*/
+.wheel {
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    position: relative;
+    background: conic-gradient(
+        from 0deg,
+        #ff6b6b 0deg 60deg,
+        #4ecdc4 60deg 120deg,
+        #45b7d1 120deg 180deg,
+        #f9ca24 180deg 240deg,
+        #6c5ce7 240deg 300deg,
+        #fd79a8 300deg 360deg
+    );
+    box-shadow: 
+        0 0 0 8px var(--bg-white),
+        0 0 0 12px var(--primary-color),
+        0 0 30px rgba(0, 0, 0, 0.3);
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+    cursor: pointer;
+}
+
+/* 转盘旋转状态 */
+.wheel.spinning {
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+}
+
+/* 
+    转盘内部扇区容器
+    - 用于放置扇区文字
+*/
+.wheel-inner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* 
+    转盘扇区样式
+    - 每个扇区显示餐厅名称
+    - 使用绝对定位和旋转定位
+*/
+.wheel-sector {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    /* 将文字定位到扇区中心偏外位置 */
+    padding-top: 30px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--bg-white);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    pointer-events: none; /* 防止文字阻挡点击 */
+}
+
+/* 
+    转盘中心按钮
+    - 圆形按钮，点击开始旋转
+*/
+.wheel-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    box-shadow: 
+        0 4px 15px rgba(196, 30, 58, 0.4),
+        inset 0 2px 10px rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    z-index: 10;
+}
+
+/* 中心按钮悬停效果 */
+.wheel-center:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 
+        0 6px 20px rgba(196, 30, 58, 0.5),
+        inset 0 2px 10px rgba(255, 255, 255, 0.3);
+}
+
+/* 中心按钮文字 */
+.wheel-center-text {
+    color: var(--bg-white);
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* 
+    转盘指针
+    - 指示当前选中的扇区
+    - 使用三角形箭头
+*/
+.wheel-pointer {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+}
+
+/* 指针箭头 */
+.pointer-arrow {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 35px solid var(--primary-color);
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
+}
+
+/* 
+    抽取结果展示区域（简洁卡片风格）
+    - 放在转盘旁边
+    - 参考图片设计风格
+*/
+.wheel-result-card {
+    background: var(--bg-white);
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-width: 280px;
+    max-width: 320px;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* 庆祝图标 */
+.result-celebration {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    animation: bounce 1s ease infinite;
+}
+
+/* 结果标题 */
+.result-title {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* 结果内容包装器 */
+.result-content-wrapper {
+    margin-bottom: 25px;
+}
+
+/* 结果餐厅名称 */
+.result-restaurant {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* 结果菜品名称 */
+.result-dish {
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+/* 查看菜品按钮 */
+.result-btn {
+    width: 100%;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--bg-white);
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
+}
+
+/* 查看菜品按钮悬停效果 */
+.result-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(196, 30, 58, 0.4);
+}
+
+/* 
+    抽取模式选择
+    - 单选框样式美化
+*/
+.wheel-options {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 25px;
+}
+
+/* 选项标签 */
+.option-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 10px 20px;
+    background: var(--bg-white);
+    border-radius: 25px;
+    box-shadow: var(--shadow-light);
+    transition: all var(--transition-fast);
+}
+
+/* 选项标签悬停效果 */
+.option-label:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+}
+
+/* 单选框样式 */
+.option-label input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* 选项文字 */
+.option-text {
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* 
+    转盘动画关键帧
+*/
+
+/* 旋转动画 */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 弹跳动画 */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 
+    响应式调整 - 转盘区域
+*/
+
+/* 平板设备 */
+@media screen and (max-width: 1024px) {
+    .wheel {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .wheel-center {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .wheel-center-text {
+        font-size: 1rem;
+    }
+    
+    .wheel-sector {
+        font-size: 0.85rem;
+        padding-top: 25px;
+    }
+}
+
+/* 移动设备 */
+@media screen and (max-width: 768px) {
+    .lucky-wheel-section {
+        padding: 40px 4%;
+    }
+    
+    .wheel-title {
+        font-size: 2rem;
+    }
+    
+    .wheel-icon {
+        font-size: 2.5rem;
+    }
+    
+    /* 转盘和结果卡片垂直排列 */
+    .wheel-and-result {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .wheel {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .wheel-center {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .wheel-center-text {
+        font-size: 0.9rem;
+    }
+    
+    .wheel-sector {
+        font-size: 0.8rem;
+        padding-top: 20px;
+    }
+    
+    /* 结果卡片宽度调整 */
+    .wheel-result-card {
+        min-width: 260px;
+        max-width: 100%;
+    }
+    
+    .wheel-options {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .option-label {
+        width: 80%;
+        justify-content: center;
+    }
+}
+
+/* 小屏移动设备 */
+@media screen and (max-width: 480px) {
+    .wheel {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .wheel-center {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .wheel-center-text {
+        font-size: 0.85rem;
+    }
+    
+    .wheel-sector {
+        font-size: 0.75rem;
+        padding-top: 15px;
+    }
+    
+    .result-icon {
+        font-size: 2.5rem;
+    }
+    
+    .result-title {
+        font-size: 1.3rem;
+    }
+}
+
+/*
+============================================
+菜品特写模态框样式
+============================================
+- 大图展示抽中的菜品
+- 包含庆祝动画和详细信息
+- 响应式设计适配各种屏幕
+*/
+
+/* 
+    特写模态框容器
+    - 全屏遮罩层
+    - 居中显示内容
+*/
+.featured-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3000;
+    background: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* 
+    特写模态框内容区域
+    - 大尺寸卡片
+    - 渐变背景
+*/
+.featured-modal-content {
+    background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
+    border-radius: 30px;
+    max-width: 700px;
+    width: 100%;
+    position: relative;
+    animation: featuredSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* 特写模态框关闭按钮 */
+.featured-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 2.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.featured-modal-close:hover {
+    color: var(--primary-color);
+    transform: rotate(90deg);
+    background: var(--bg-white);
+}
+
+/* 
+    特写主体内容
+    - 内边距和布局
+*/
+.featured-body {
+    padding: 40px 30px;
+    text-align: center;
+}
+
+/* 
+    庆祝动画区域
+    - 彩带和星星动画
+*/
+.celebration {
+    position: relative;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+/* 彩带元素 */
+.confetti {
+    position: absolute;
+    font-size: 2.5rem;
+    animation: confettiFall 3s ease-in-out infinite;
+}
+
+/* 为每个彩带设置不同的位置和延迟 */
+.confetti:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.confetti:nth-child(2) {
+    left: 30%;
+    animation-delay: 0.5s;
+}
+
+.confetti:nth-child(3) {
+    left: 60%;
+    animation-delay: 1s;
+}
+
+.confetti:nth-child(4) {
+    left: 80%;
+    animation-delay: 1.5s;
+}
+
+/* 
+    恭喜文字
+    - 大号字体
+    - 渐变色文字
+*/
+.featured-congrats {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* 
+    餐厅信息区域
+    - 显示餐厅图标和名称
+*/
+.featured-restaurant {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 10px 20px;
+    background: rgba(196, 30, 58, 0.1);
+    border-radius: 20px;
+    display: inline-flex;
+}
+
+.featured-restaurant-icon {
+    font-size: 1.8rem;
+}
+
+.featured-restaurant-name {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* 
+    菜品大图容器
+    - 圆角边框
+    - 阴影效果
+*/
+.featured-image-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 25px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* 菜品大图 */
+.featured-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+/* 图片悬停放大效果 */
+.featured-image-container:hover .featured-image {
+    transform: scale(1.05);
+}
+
+/* 图片叠加层 */
+.featured-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 60%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    pointer-events: none;
+}
+
+/* 
+    菜品信息区域
+*/
+.featured-info {
+    margin-bottom: 30px;
+}
+
+/* 菜品名称 */
+.featured-dish-name {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* 菜品描述 */
+.featured-dish-desc {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* 价格容器 */
+.featured-price-container {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(196, 30, 58, 0.3);
+}
+
+/* 价格标签 */
+.featured-price-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 2px;
+}
+
+/* 价格数值 */
+.featured-price {
+    font-size: 2.5rem;
+    color: var(--bg-white);
+    font-weight: bold;
+}
+
+/* 
+    操作按钮区域
+*/
+.featured-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* 按钮基础样式 */
+.featured-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    border: none;
+}
+
+/* 按钮图标 */
+.btn-icon {
+    font-size: 1.3rem;
+}
+
+/* 主要按钮样式 */
+.featured-btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--bg-white);
+    box-shadow: 0 5px 15px rgba(196, 30, 58, 0.3);
+}
+
+.featured-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(196, 30, 58, 0.4);
+}
+
+/* 次要按钮样式 */
+.featured-btn-secondary {
+    background: var(--bg-white);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.featured-btn-secondary:hover {
+    background: var(--primary-color);
+    color: var(--bg-white);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(196, 30, 58, 0.3);
+}
+
+/* 
+    特写模态框动画关键帧
+*/
+
+/* 滑入动画 */
+@keyframes featuredSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* 彩带下落动画 */
+@keyframes confettiFall {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.8;
+    }
+}
+
+/* 
+    响应式调整 - 特写模态框
+*/
+
+/* 平板设备 */
+@media screen and (max-width: 1024px) {
+    .featured-modal-content {
+        max-width: 600px;
+    }
+    
+    .featured-image {
+        height: 250px;
+    }
+    
+    .featured-congrats {
+        font-size: 2rem;
+    }
+    
+    .featured-dish-name {
+        font-size: 1.8rem;
+    }
+}
+
+/* 移动设备 */
+@media screen and (max-width: 768px) {
+    .featured-body {
+        padding: 30px 20px;
+    }
+    
+    .featured-congrats {
+        font-size: 1.8rem;
+    }
+    
+    .featured-restaurant {
+        padding: 8px 15px;
+    }
+    
+    .featured-restaurant-icon {
+        font-size: 1.5rem;
+    }
+    
+    .featured-restaurant-name {
+        font-size: 1.1rem;
+    }
+    
+    .featured-image {
+        height: 220px;
+    }
+    
+    .featured-dish-name {
+        font-size: 1.6rem;
+    }
+    
+    .featured-dish-desc {
+        font-size: 1rem;
+    }
+    
+    .featured-price {
+        font-size: 2rem;
+    }
+    
+    .featured-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .featured-btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+}
+
+/* 小屏移动设备 */
+@media screen and (max-width: 480px) {
+    .featured-modal-close {
+        top: 15px;
+        right: 15px;
+        font-size: 2rem;
+    }
+    
+    .featured-congrats {
+        font-size: 1.5rem;
+    }
+    
+    .featured-image {
+        height: 180px;
+    }
+    
+    .featured-dish-name {
+        font-size: 1.4rem;
+    }
+    
+    .featured-price {
+        font-size: 1.8rem;
+    }
+    
+    .featured-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+
+/*
+============================================
+档口区域样式
+============================================
+- 每个档口包含10道菜品
+- 档口标题和布局样式
+*/
+
+/* 
+    档口区域容器
+    - 包含档口标题和菜品网格
+    - 带有背景和圆角
+*/
+.stall-section {
+    margin-bottom: 50px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all var(--transition-normal);
+}
+
+/* 档口区域悬停效果 */
+.stall-section:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* 
+    档口标题
+    - 显示档口编号
+    - 带有底部边框装饰
+*/
+.stall-title {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--primary-color);
+    position: relative;
+    display: inline-block;
+}
+
+/* 档口标题装饰线 */
+.stall-title::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--secondary-color);
+}
+
+/* 
+    餐厅统计信息
+    - 显示档口数量和菜品总数
+*/
+.restaurant-stats {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+/* 
+    响应式调整 - 档口区域
+*/
+
+/* 平板设备 */
+@media screen and (max-width: 1024px) {
+    .stall-section {
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+    
+    .stall-title {
+        font-size: 1.3rem;
+    }
+}
+
+/* 移动设备 */
+@media screen and (max-width: 768px) {
+    .stall-section {
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .stall-title {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+    
+    .restaurant-stats {
+        font-size: 0.9rem;
+    }
+}
+
+/* 小屏移动设备 */
+@media screen and (max-width: 480px) {
+    .stall-section {
+        padding: 12px;
+        margin-bottom: 25px;
+    }
+    
+    .stall-title {
+        font-size: 1.1rem;
+    }
+}
