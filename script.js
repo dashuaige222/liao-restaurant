@@ -202,26 +202,74 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(event) {
             // 阻止默认跳转行为
             event.preventDefault();
-            
+
             // 移除所有导航链接的active类
             navLinks.forEach(function(item) {
                 item.classList.remove('active');
             });
-            
+
             // 为当前点击的链接添加active类
             this.classList.add('active');
-            
+
             // 在移动端关闭导航菜单
             if (nav.classList.contains('active')) {
                 nav.classList.remove('active');
                 menuToggle.classList.remove('active');
             }
-            
+
             // 获取要筛选的餐厅类型
             const restaurantType = this.getAttribute('data-restaurant');
-            
+
             // 调用筛选函数
             filterRestaurants(restaurantType);
+        });
+    });
+
+    /**
+     * 下拉菜单链接点击事件处理
+     * - 处理楼层选择
+     * - 滚动到对应楼层
+     */
+    const dropdownLinks = document.querySelectorAll('.dropdown-link');
+    dropdownLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            // 阻止默认跳转行为
+            event.preventDefault();
+
+            // 获取餐厅类型和楼层
+            const restaurantType = this.getAttribute('data-restaurant');
+            const floor = this.getAttribute('data-floor');
+
+            // 筛选显示对应餐厅
+            filterRestaurants(restaurantType);
+
+            // 计算档口范围（每层约12个档口）
+            // 一楼：档口1-12，二楼：档口13-24，三楼：档口25-35
+            const stallRanges = {
+                '1': { start: 1, end: 12 },
+                '2': { start: 13, end: 24 },
+                '3': { start: 25, end: 35 }
+            };
+
+            const range = stallRanges[floor];
+            const targetStall = Math.floor((range.start + range.end) / 2); // 滚动到中间档口
+
+            // 延迟滚动，等待筛选完成
+            setTimeout(function() {
+                const stallSection = document.querySelector(
+                    `[data-restaurant="${restaurantType}"] .stall-section:nth-child(${targetStall})`
+                );
+
+                if (stallSection) {
+                    const navHeight = document.querySelector('.header').offsetHeight;
+                    const scrollPosition = stallSection.offsetTop - navHeight - 20;
+
+                    window.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
         });
     });
     
@@ -665,64 +713,81 @@ document.addEventListener('DOMContentLoaded', function() {
     function showResult(restaurantIndex) {
         // 获取抽中的餐厅
         const selectedRestaurant = restaurants[restaurantIndex];
-        
-        // 获取抽取模式（餐厅或菜品）
+
+        // 获取抽取模式（餐厅、档口或菜品）
         const wheelMode = document.querySelector('input[name="wheelMode"]:checked');
         const mode = wheelMode ? wheelMode.value : 'restaurant';
-        
+
         // 随机选择一道菜品
         const randomDishIndex = Math.floor(Math.random() * selectedRestaurant.dishes.length);
         const selectedDish = selectedRestaurant.dishes[randomDishIndex];
-        
+
+        // 随机选择一个档口（1-35）
+        const randomStallIndex = Math.floor(Math.random() * 35) + 1;
+        const selectedStall = `档口${randomStallIndex}`;
+
         // 获取结果展示元素
         const resultTitle = wheelResult.querySelector('.result-title');
         const resultRestaurant = wheelResult.querySelector('.result-restaurant');
         const resultDish = wheelResult.querySelector('.result-dish');
         const resultCelebration = wheelResult.querySelector('.result-celebration');
-        
+
         // 更新结果内容
         if (resultCelebration) {
             resultCelebration.textContent = '🎊';
         }
-        
+
         if (resultTitle) {
             resultTitle.textContent = '恭喜您抽中了';
         }
-        
+
         if (resultRestaurant) {
             resultRestaurant.textContent = `${selectedRestaurant.icon} ${selectedRestaurant.name}`;
         }
-        
+
         // 根据模式显示不同内容
         if (mode === 'dish') {
             if (resultDish) {
                 resultDish.textContent = `推荐菜品：${selectedDish}`;
             }
-            
+
             // 显示菜品特写模态框
             setTimeout(function() {
                 showFeaturedDish(selectedRestaurant, selectedDish);
             }, 500);
+        } else if (mode === 'stall') {
+            if (resultDish) {
+                resultDish.textContent = `推荐档口：${selectedStall}`;
+            }
         } else {
             if (resultDish) {
                 resultDish.textContent = '快去探索美味吧！';
             }
         }
-        
+
         // 显示"查看菜品"按钮
         if (viewDishBtn) {
             viewDishBtn.classList.remove('hidden');
-            
+
             // 为按钮添加点击事件，跳转到对应餐厅
             viewDishBtn.onclick = function() {
                 // 筛选显示对应餐厅
                 filterRestaurants(selectedRestaurant.id);
-                
+
                 // 滚动到餐厅区域
                 const restaurantsSection = document.getElementById('restaurants');
                 if (restaurantsSection) {
                     const navHeight = document.querySelector('.header').offsetHeight;
-                    const scrollPosition = restaurantsSection.offsetTop - navHeight - 20;
+                    let scrollPosition = restaurantsSection.offsetTop - navHeight - 20;
+
+                    // 如果是档口模式，滚动到具体档口
+                    if (mode === 'stall') {
+                        const stallSection = document.querySelector(`[data-restaurant="${selectedRestaurant.id}"] .stall-section:nth-child(${randomStallIndex + 1})`);
+                        if (stallSection) {
+                            scrollPosition = stallSection.offsetTop - navHeight - 20;
+                        }
+                    }
+
                     window.scrollTo({
                         top: scrollPosition,
                         behavior: 'smooth'

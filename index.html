@@ -12,8 +12,8 @@
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="下一顿吃什么 - 六大特色餐厅精选菜品展示">
-    <title>下一顿吃什么 - 六大特色餐厅</title>
+    <meta name="description" content="美食天堂 - 六大特色餐厅精选菜品展示">
+    <title>美食天堂 - 六大特色餐厅</title>
     
     <!-- 
         ============================================
@@ -36,37 +36,67 @@
         <!-- 网站Logo和品牌名称 -->
         <div class="logo">
             <span class="logo-icon">🍽️</span>
-            <h1 class="logo-text">下一顿吃什么</h1>
+            <h1 class="logo-text">美食天堂</h1>
         </div>
         
         <!-- 主导航菜单 -->
         <nav class="nav">
             <ul class="nav-list">
-                <!-- 
+                <!--
                     导航菜单项
                     - data-restaurant: 自定义数据属性，用于JavaScript识别餐厅
                     - class="active": 默认激活状态，显示当前选中项
                 -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" data-restaurant="all">首页</a>
+                    <a href="#" class="nav-link active" data-restaurant="all">全部餐厅</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item has-dropdown">
                     <a href="#" class="nav-link" data-restaurant="chinese">翰苑</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link" data-restaurant="chinese" data-floor="1">一楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="chinese" data-floor="2">二楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="chinese" data-floor="3">三楼</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item has-dropdown">
                     <a href="#" class="nav-link" data-restaurant="western">博苑</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link" data-restaurant="western" data-floor="1">一楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="western" data-floor="2">二楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="western" data-floor="3">三楼</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item has-dropdown">
                     <a href="#" class="nav-link" data-restaurant="japanese">慧苑</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link" data-restaurant="japanese" data-floor="1">一楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="japanese" data-floor="2">二楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="japanese" data-floor="3">三楼</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item has-dropdown">
                     <a href="#" class="nav-link" data-restaurant="korean">湖苑</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link" data-restaurant="korean" data-floor="1">一楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="korean" data-floor="2">二楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="korean" data-floor="3">三楼</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item has-dropdown">
                     <a href="#" class="nav-link" data-restaurant="dessert">雅苑</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link" data-restaurant="dessert" data-floor="1">一楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="dessert" data-floor="2">二楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="dessert" data-floor="3">三楼</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item has-dropdown">
                     <a href="#" class="nav-link" data-restaurant="cafe">楠苑</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="dropdown-link" data-restaurant="cafe" data-floor="1">一楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="cafe" data-floor="2">二楼</a></li>
+                        <li><a href="#" class="dropdown-link" data-restaurant="cafe" data-floor="3">三楼</a></li>
+                    </ul>
                 </li>
             </ul>
         </nav>
@@ -77,17 +107,19 @@
         </button>
     </header>
 
-    <!-- 
+    <!--
         ============================================
         页面横幅区域（Hero Section）
         ============================================
         - 展示网站主题和欢迎信息
-        - 通常包含背景图片和标题文字
+        - 使用液态以太背景效果
     -->
     <section class="hero">
+        <!-- 液态背景Canvas -->
+        <canvas id="liquidBackground" class="liquid-canvas"></canvas>
         <div class="hero-content">
             <h2 class="hero-title">探索六大特色餐厅</h2>
-            <p class="hero-subtitle">精选美食，品质生活</p>
+            <p class="hero-subtitle">精选美食，品质生活，尽在美食天堂</p>
             <a href="#restaurants" class="hero-btn">开始探索</a>
         </div>
     </section>
@@ -172,12 +204,16 @@
         
         <!-- 
             抽取模式选择（底部）
-            - 可选择抽取餐厅或具体菜品
+            - 可选择抽取餐厅、档口或具体菜品
         -->
         <div class="wheel-options">
             <label class="option-label">
                 <input type="radio" name="wheelMode" value="restaurant" checked>
                 <span class="option-text">随机餐厅</span>
+            </label>
+            <label class="option-label">
+                <input type="radio" name="wheelMode" value="stall">
+                <span class="option-text">随机档口</span>
             </label>
             <label class="option-label">
                 <input type="radio" name="wheelMode" value="dish">
@@ -207,7 +243,7 @@
 
     </main>
 
-    <!-- 
+    <!--
         ============================================
         页脚区域
         ============================================
@@ -222,7 +258,7 @@
                     下一顿吃什么汇聚六大特色餐厅——翰苑、博苑、慧苑、湖苑、雅苑、楠苑，帮你做出选择。后面会逐渐加入餐评及餐品排行，借鉴一下大众的选择
                 </p>
             </div>
-            
+
             <!-- 联系方式 -->
             <div class="footer-section">
                 <h3 class="footer-title">联系我们</h3>
@@ -230,25 +266,24 @@
                     <li>📍 地址：东校区many stars 16 118</li>
                     <li>📞 电话：15610630910</li>
                     <li>📧 邮箱：3151647844@qq.com</li>
-                   
                 </ul>
             </div>
-            
+
             <!-- 社交媒体 -->
             <div class="footer-section">
                 <h3 class="footer-title">关注我们</h3>
                 <div class="social-links">
                     <a href="#" class="social-link" aria-label="微信">💬</a>
-                    <a href="#" class="social-link" aria-label="微博">📱</a>
+                    <a href="#" class="social-link" aria-label="应用">📱</a>
                     <a href="#" class="social-link" aria-label="抖音">🎵</a>
                     <a href="#" class="social-link" aria-label="小红书">📕</a>
                 </div>
             </div>
         </div>
-        
+
         <!-- 版权信息 -->
         <div class="footer-bottom">
-            <p>&copy; 2026 下一顿吃什么 eat what food last time. </p>
+            <p>&copy; 2026 下一顿吃什么 eat what food last time.</p>
         </div>
     </footer>
 
@@ -316,7 +351,7 @@
                     <h3 id="featuredDishName" class="featured-dish-name"></h3>
                     <p id="featuredDishDesc" class="featured-dish-desc"></p>
                     <div class="featured-price-container">
-                        <span class="featured-price-label">今日不特惠</span>
+                        <span class="featured-price-label">今日特惠</span>
                         <span id="featuredPrice" class="featured-price"></span>
                     </div>
                 </div>
@@ -336,7 +371,7 @@
         </div>
     </div>
 
-    <!-- 
+    <!--
         ============================================
         JavaScript文件引入
         ============================================
@@ -345,5 +380,6 @@
     -->
     <script src="restaurant-data.js"></script>
     <script src="script.js"></script>
+    <script src="liquid-background.js"></script>
 </body>
 </html>

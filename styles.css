@@ -228,6 +228,77 @@ ul, ol {
     width: 100%;
 }
 
+/*
+    ============================================
+    下拉菜单样式
+    ============================================
+    - 鼠标悬停时显示楼层选择
+    - 平滑的显示/隐藏动画
+*/
+
+/* 下拉菜单容器 */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-white);
+    min-width: 120px;
+    box-shadow: var(--shadow-medium);
+    border-radius: 8px;
+    padding: 8px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+    z-index: 1000;
+    margin-top: 5px;
+}
+
+/* 下拉菜单项 */
+.dropdown-menu li {
+    list-style: none;
+}
+
+/* 下拉菜单链接 */
+.dropdown-link {
+    display: block;
+    padding: 10px 20px;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    text-align: center;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+/* 下拉菜单链接悬停效果 */
+.dropdown-link:hover {
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+}
+
+/* 鼠标悬停在导航项时显示下拉菜单 */
+.nav-item.has-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* 为有下拉菜单的导航项添加小箭头 */
+.nav-item.has-dropdown > .nav-link::before {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--text-dark);
+    transition: border-color var(--transition-fast);
+}
+
+.nav-item.has-dropdown:hover > .nav-link::before {
+    border-top-color: var(--primary-color);
+}
+
 /* 
     移动端菜单切换按钮
     - 桌面端隐藏
@@ -287,25 +358,30 @@ Hero横幅区域样式
     /* 占位高度，为背景图片预留空间 */
     min-height: 500px;
     height: 60vh;
-    
-    /* 背景设置 - 使用渐变模拟背景图 */
-    background: linear-gradient(
-        135deg,
-        var(--primary-color) 0%,
-        var(--primary-dark) 100%
-    );
-    
+
     /* 居中布局内容 */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    
+
     /* 内边距，考虑固定导航栏高度 */
     padding-top: 70px;
-    
+
     /* 相对定位，用于叠加效果 */
     position: relative;
+    overflow: hidden;
+}
+
+/* 液态背景Canvas */
+.liquid-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
 }
 
 /* Hero区域叠加层 - 增加纹理效果 */
@@ -317,7 +393,8 @@ Hero横幅区域样式
     right: 0;
     bottom: 0;
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>') repeat;
-    opacity: 0.3;
+    opacity: 0.1;
+    z-index: 1;
 }
 
 /* Hero内容容器 */
@@ -440,10 +517,10 @@ Hero横幅区域样式
     display: grid;
     /* 
         auto-fill: 自动填充列
-        minmax: 最小240px，最大1fr（平分剩余空间）
+        minmax: 最小180px，最大1fr（平分剩余空间）
     */
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
 }
 
 /*
@@ -478,7 +555,7 @@ Hero横幅区域样式
 .dish-image-container {
     position: relative;
     width: 100%;
-    height: 160px;
+    height: 120px;
     overflow: hidden;
 }
 
@@ -502,13 +579,13 @@ Hero横幅区域样式
 */
 .dish-tag {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     background-color: var(--primary-color);
     color: var(--bg-white);
-    padding: 4px 12px;
+    padding: 3px 10px;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: bold;
     box-shadow: 0 2px 8px rgba(196, 30, 58, 0.4);
 }
@@ -518,23 +595,23 @@ Hero横幅区域样式
     - 包含名称、描述、价格
 */
 .dish-info {
-    padding: 15px;
+    padding: 10px;
 }
 
 /* 菜品名称 */
 .dish-name {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     color: var(--text-dark);
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     font-weight: bold;
 }
 
 /* 菜品描述 */
 .dish-desc {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text-light);
-    margin-bottom: 12px;
-    line-height: 1.5;
+    margin-bottom: 8px;
+    line-height: 1.4;
     /* 限制两行，超出显示省略号 */
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -555,18 +632,18 @@ Hero横幅区域样式
 
 /* 菜品价格 */
 .dish-price {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: var(--primary-color);
     font-weight: bold;
 }
 
 /* 菜品按钮 */
 .dish-btn {
-    padding: 6px 16px;
+    padding: 5px 12px;
     background-color: var(--primary-color);
     color: var(--bg-white);
     border-radius: 20px;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 500;
     transition: all var(--transition-fast);
 }
