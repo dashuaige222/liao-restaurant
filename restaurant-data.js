@@ -156,7 +156,7 @@ function getDishTemplates(type) {
  */
 function generateAllRestaurantsData() {
     return {
-        chinese: {
+        chinese: typeof hanyuanRealData !== 'undefined' ? hanyuanRealData : {
             name: '翰苑',
             icon: '🥢',
             id: 'chinese',
