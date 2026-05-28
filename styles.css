@@ -65,6 +65,13 @@ body {
     color: var(--text-dark);
     background-color: var(--bg-light);
     overflow-x: hidden; /* 防止横向滚动条 */
+
+    /* 背景图片设置 */
+    background-image: url('beijingtu.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 /* 
@@ -510,17 +517,16 @@ Hero横幅区域样式
 菜品网格布局
 ============================================
 - 使用CSS Grid实现响应式网格
-- 桌面端4列，平板2列，移动端1列
+- 一行两列布局，列表式展示
 */
 
 .dishes-grid {
     display: grid;
-    /* 
-        auto-fill: 自动填充列
-        minmax: 最小180px，最大1fr（平分剩余空间）
-    */
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
+    /* 一行两列布局 */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /*
@@ -528,130 +534,134 @@ Hero横幅区域样式
 菜品卡片样式
 ============================================
 - 单个菜品的展示卡片
-- 包含图片、名称、描述、价格
-- 悬停时有提升效果
+- 列表式布局，无图片
+- 美观的卡片设计
 */
 
 .dish-card {
-    background-color: var(--bg-white);
-    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: var(--shadow-light);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     transition: all var(--transition-normal);
     cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 /* 菜品卡片悬停效果 */
 .dish-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-heavy);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(196, 30, 58, 0.15);
+    border-color: rgba(196, 30, 58, 0.3);
+    background: rgba(255, 255, 255, 0.85);
 }
 
 /* 
-    菜品图片容器
-    - 相对定位，用于放置标签
-    - 设置固定高度比例
+    菜品图片容器 - 隐藏
 */
 .dish-image-container {
-    position: relative;
-    width: 100%;
-    height: 120px;
-    overflow: hidden;
+    display: none;
 }
 
-/* 菜品图片样式 */
+/* 菜品图片样式 - 隐藏 */
 .dish-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 保持比例裁剪 */
-    transition: transform var(--transition-slow);
-}
-
-/* 图片悬停放大效果 */
-.dish-card:hover .dish-image {
-    transform: scale(1.1);
+    display: none;
 }
 
 /* 
     菜品标签样式
-    - 如"招牌推荐"、"人气爆款"
-    - 绝对定位在图片右上角
+    - 显示在卡片右上角
 */
 .dish-tag {
     position: absolute;
     top: 8px;
     right: 8px;
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: var(--bg-white);
     padding: 3px 10px;
-    border-radius: 20px;
+    border-radius: 12px;
     font-size: 0.7rem;
     font-weight: bold;
-    box-shadow: 0 2px 8px rgba(196, 30, 58, 0.4);
+    box-shadow: 0 2px 6px rgba(196, 30, 58, 0.3);
+    z-index: 1;
 }
 
-/* 
+/*
     菜品信息区域
     - 包含名称、描述、价格
 */
 .dish-info {
-    padding: 10px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/*
+    菜品头部行
+    - 菜名、价格、按钮排成一行
+*/
+.dish-header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
 }
 
 /* 菜品名称 */
 .dish-name {
     font-size: 0.95rem;
     color: var(--text-dark);
-    margin-bottom: 5px;
     font-weight: bold;
+    margin-bottom: 0;
+    line-height: 1.3;
+    flex: 1;
+    min-width: 0;
 }
 
 /* 菜品描述 */
 .dish-desc {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: var(--text-light);
-    margin-bottom: 8px;
-    line-height: 1.4;
-    /* 限制两行，超出显示省略号 */
+    line-height: 1.3;
+    /* 限制一行，超出显示省略号 */
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-}
-
-/* 
-    菜品底部区域
-    - 包含价格和按钮
-    - 使用flex布局
-*/
-.dish-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-bottom: 0;
 }
 
 /* 菜品价格 */
 .dish-price {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--primary-color);
     font-weight: bold;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 /* 菜品按钮 */
 .dish-btn {
-    padding: 5px 12px;
-    background-color: var(--primary-color);
+    padding: 4px 12px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: var(--bg-white);
-    border-radius: 20px;
+    border-radius: 15px;
     font-size: 0.75rem;
-    font-weight: 500;
+    font-weight: 600;
     transition: all var(--transition-fast);
+    box-shadow: 0 1px 4px rgba(196, 30, 58, 0.2);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 /* 菜品按钮悬停效果 */
 .dish-btn:hover {
-    background-color: var(--primary-dark);
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
 }
 
 /*
@@ -996,10 +1006,10 @@ Hero横幅区域样式
         font-size: 2rem;
     }
     
-    /* 菜品网格调整 */
+    /* 菜品网格调整 - 移动端单列 */
     .dishes-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 15px;
     }
     
     /* 页脚调整 */
@@ -1039,11 +1049,20 @@ Hero横幅区域样式
     }
     
     .dish-name {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
-    
+
     .dish-price {
-        font-size: 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .dish-info {
+        padding: 8px 10px;
+    }
+
+    .dish-btn {
+        padding: 3px 10px;
+        font-size: 0.7rem;
     }
 }
 
@@ -1079,15 +1098,17 @@ Hero横幅区域样式
 - 包含转盘、指针、结果展示等
 */
 
-/* 
+/*
     转盘区域整体容器
     - 居中布局
     - 设置背景和内边距
 */
 .lucky-wheel-section {
-    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+    background: rgba(255, 245, 245, 0.7);
     padding: 60px 5%;
     text-align: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 /* 转盘内容容器 */
@@ -1288,13 +1309,13 @@ Hero横幅区域样式
     filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
 }
 
-/* 
+/*
     抽取结果展示区域（简洁卡片风格）
     - 放在转盘旁边
     - 参考图片设计风格
 */
 .wheel-result-card {
-    background: var(--bg-white);
+    background: rgba(255, 255, 255, 0.85);
     border-radius: 20px;
     padding: 30px 25px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -1302,6 +1323,8 @@ Hero横幅区域样式
     min-width: 280px;
     max-width: 320px;
     animation: fadeInUp 0.5s ease-out;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* 庆祝图标 */
@@ -1375,10 +1398,12 @@ Hero横幅区域样式
     gap: 8px;
     cursor: pointer;
     padding: 10px 20px;
-    background: var(--bg-white);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 25px;
     box-shadow: var(--shadow-light);
     transition: all var(--transition-fast);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 /* 选项标签悬停效果 */
@@ -1986,50 +2011,91 @@ Hero横幅区域样式
 - 档口标题和布局样式
 */
 
-/* 
+/*
     档口区域容器
     - 包含档口标题和菜品网格
     - 带有背景和圆角
 */
 .stall-section {
-    margin-bottom: 50px;
-    padding: 25px;
-    background: rgba(255, 255, 255, 0.7);
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 15px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: all var(--transition-normal);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* 档口区域悬停效果 */
 .stall-section:hover {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.75);
 }
 
-/* 
+/*
     档口标题
     - 显示档口编号
-    - 带有底部边框装饰
+    - 可点击展开/收起
 */
 .stall-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--primary-color);
-    margin-bottom: 25px;
-    padding-bottom: 12px;
-    border-bottom: 3px solid var(--primary-color);
-    position: relative;
-    display: inline-block;
+    margin-bottom: 0;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--bg-white);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(196, 30, 58, 0.2);
 }
 
-/* 档口标题装饰线 */
-.stall-title::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: var(--secondary-color);
+/* 档口标题悬停效果 */
+.stall-title:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
+}
+
+/* 档口标题激活状态 */
+.stall-title.active {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, #7a1226 100%);
+    margin-bottom: 20px;
+}
+
+/* 档口展开/收起图标 */
+.stall-toggle-icon {
+    font-size: 1.5rem;
+    transition: transform var(--transition-normal);
+    font-weight: bold;
+}
+
+/* 展开状态图标旋转 */
+.stall-title.active .stall-toggle-icon {
+    transform: rotate(180deg);
+}
+
+/*
+    菜品网格容器
+    - 默认隐藏
+    - 点击档口标题后显示
+*/
+.dishes-grid {
+    display: none;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* 展开状态显示菜品网格 */
+.dishes-grid.active {
+    display: grid;
 }
 
 /* 
@@ -2050,12 +2116,13 @@ Hero横幅区域样式
 /* 平板设备 */
 @media screen and (max-width: 1024px) {
     .stall-section {
-        padding: 20px;
-        margin-bottom: 40px;
+        padding: 18px;
+        margin-bottom: 25px;
     }
-    
+
     .stall-title {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+        padding: 10px 18px;
     }
 }
 
@@ -2063,14 +2130,14 @@ Hero横幅区域样式
 @media screen and (max-width: 768px) {
     .stall-section {
         padding: 15px;
-        margin-bottom: 30px;
-    }
-    
-    .stall-title {
-        font-size: 1.2rem;
         margin-bottom: 20px;
     }
-    
+
+    .stall-title {
+        font-size: 1.1rem;
+        padding: 10px 15px;
+    }
+
     .restaurant-stats {
         font-size: 0.9rem;
     }
@@ -2080,6 +2147,14 @@ Hero横幅区域样式
 @media screen and (max-width: 480px) {
     .stall-section {
         padding: 12px;
+        margin-bottom: 15px;
+    }
+
+    .stall-title {
+        font-size: 1rem;
+        padding: 8px 12px;
+    }
+}
         margin-bottom: 25px;
     }
     

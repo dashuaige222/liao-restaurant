@@ -156,7 +156,13 @@ function getDishTemplates(type) {
  */
 function generateAllRestaurantsData() {
     return {
-        chinese: typeof hanyuanRealData !== 'undefined' ? hanyuanRealData : {
+        chinese: typeof stallData !== 'undefined' ? {
+            name: '翰苑',
+            icon: '🥢',
+            id: 'chinese',
+            desc: '传统中华美食，地道家乡味道',
+            stalls: stallData
+        } : {
             name: '翰苑',
             icon: '🥢',
             id: 'chinese',

@@ -69,30 +69,24 @@ document.addEventListener('DOMContentLoaded', function() {
             restaurant.stalls.forEach(function(stall) {
                 html += `
                     <div class="stall-section">
-                        <h3 class="stall-title">${stall.name}</h3>
+                        <h3 class="stall-title">
+                            <span>${stall.name}</span>
+                            <span class="stall-toggle-icon">▼</span>
+                        </h3>
                         <div class="dishes-grid">
                 `;
                 
                 // 遍历档口的所有菜品
                 stall.dishes.forEach(function(dish) {
-                    const tagHtml = dish.tag ? `<span class="dish-tag">${dish.tag}</span>` : '';
-                    
                     html += `
                         <article class="dish-card">
-                            <div class="dish-image-container">
-                                <img src="${dish.image}" 
-                                     alt="${dish.name}" 
-                                     class="dish-image"
-                                     onerror="this.src='https://via.placeholder.com/300x200?text=${encodeURIComponent(dish.name)}'">
-                                ${tagHtml}
-                            </div>
                             <div class="dish-info">
-                                <h4 class="dish-name">${dish.name}</h4>
-                                <p class="dish-desc">${dish.desc}</p>
-                                <div class="dish-footer">
+                                <div class="dish-header-row">
+                                    <h4 class="dish-name">${dish.name}</h4>
                                     <span class="dish-price">¥${dish.price}</span>
-                                    <button class="dish-btn">查看详情</button>
+                                    <button class="dish-btn">详情</button>
                                 </div>
+                                <p class="dish-desc">${dish.desc}</p>
                             </div>
                         </article>
                     `;
@@ -119,10 +113,28 @@ document.addEventListener('DOMContentLoaded', function() {
     /**
      * 初始化菜品卡片事件
      * - 为动态生成的菜品卡片添加点击事件
+     * - 为档口标题添加展开/收起功能
      */
     function initDishCards() {
+        // 初始化档口展开/收起功能
+        const stallTitles = document.querySelectorAll('.stall-title');
+
+        stallTitles.forEach(function(title) {
+            title.addEventListener('click', function() {
+                // 切换激活状态
+                this.classList.toggle('active');
+
+                // 找到对应的菜品网格
+                const dishesGrid = this.nextElementSibling;
+                if (dishesGrid && dishesGrid.classList.contains('dishes-grid')) {
+                    dishesGrid.classList.toggle('active');
+                }
+            });
+        });
+
+        // 为菜品卡片添加点击事件
         const dishCards = document.querySelectorAll('.dish-card');
-        
+
         dishCards.forEach(function(card) {
             card.addEventListener('click', function() {
                 const btn = this.querySelector('.dish-btn');
@@ -131,26 +143,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
-        
+
         // 为"查看详情"按钮添加事件
         const detailButtons = document.querySelectorAll('.dish-btn');
-        
+
         detailButtons.forEach(function(button) {
             button.addEventListener('click', function(event) {
                 event.stopPropagation();
-                
+
                 const dishCard = this.closest('.dish-card');
-                const dishImage = dishCard.querySelector('.dish-image').src;
                 const dishName = dishCard.querySelector('.dish-name').textContent;
                 const dishDesc = dishCard.querySelector('.dish-desc').textContent;
                 const dishPrice = dishCard.querySelector('.dish-price').textContent;
-                
-                // 填充模态框内容
-                document.getElementById('modalImage').src = dishImage;
+
+                // 填充模态框内容（不显示图片）
+                const modalImage = document.getElementById('modalImage');
+                if (modalImage) {
+                    modalImage.style.display = 'none';
+                }
                 document.getElementById('modalTitle').textContent = dishName;
                 document.getElementById('modalDesc').textContent = dishDesc;
                 document.getElementById('modalPrice').textContent = dishPrice;
-                
+
                 // 显示模态框
                 const modal = document.getElementById('dishModal');
                 if (modal) {
