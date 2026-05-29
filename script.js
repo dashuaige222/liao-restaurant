@@ -81,12 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     html += `
                         <article class="dish-card">
                             <div class="dish-info">
-                                <div class="dish-header-row">
-                                    <h4 class="dish-name">${dish.name}</h4>
-                                    <span class="dish-price">¥${dish.price}</span>
-                                    <button class="dish-btn">详情</button>
-                                </div>
+                                <h4 class="dish-name">${dish.name}</h4>
                                 <p class="dish-desc">${dish.desc}</p>
+                                <span class="dish-price">¥${dish.price}</span>
                             </div>
                         </article>
                     `;
